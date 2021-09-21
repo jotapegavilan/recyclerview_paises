@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Septiembre_14</string>
+
+    <string name="item_menu_1">Inicio</string>
+    <string name="item_menu_2">Formulario</string>
+    <string name="item_menu_3">Listado</string>
+
+    <string name="titulo_form">Registra un nuevo país</string>
+    <string name="hint_txt">Ingresa nombre del país</string>
+    <string name="btn_form">Guardar</string>
+
+
+    <string-array name="continentes">
+        <item>Selecciona un continente</item>
+        <item>Europa</item>
+        <item>África</item>
+        <item>Asia</item>
+        <item>América</item>
+        <item>Oceanía</item>
+    </string-array>
+
+</resources>
