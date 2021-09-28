@@ -36,6 +36,11 @@ public class ListadoActivity extends AppCompatActivity {
 
     }
 
+    public void cargarRecycler(){
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        PaisAdapter adapter = new PaisAdapter(FormActivity.paisesList);
+        recycler.setAdapter(adapter);
+    }
 
 
     @Override
@@ -74,13 +79,5 @@ public class ListadoActivity extends AppCompatActivity {
 
     }
 
-    public void cargarRecycler(){
-        recycler.setLayoutManager(new LinearLayoutManager(this));
 
-        // Colección de prueba que contenga países
-
-
-        PaisAdapter adapter = new PaisAdapter(FormActivity.paisesList);
-        recycler.setAdapter(adapter);
-    }
 }

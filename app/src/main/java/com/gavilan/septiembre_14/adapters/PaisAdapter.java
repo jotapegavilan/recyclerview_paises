@@ -1,7 +1,9 @@
 package com.gavilan.septiembre_14.adapters;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gavilan.septiembre_14.EditActivity;
 import com.gavilan.septiembre_14.FormActivity;
 import com.gavilan.septiembre_14.R;
 import com.gavilan.septiembre_14.models.Pais;
@@ -37,61 +40,58 @@ public class PaisAdapter extends RecyclerView.Adapter<PaisAdapter.ViewHolder> {
         return holder;
     }
 
+    public void print(String mensaje, Context context){
+        Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show();
+    }
+
+    public void crearAlerta(Pais p, Context context){
+        AlertDialog.Builder alerta = new AlertDialog.Builder(context);
+        alerta.setTitle("CUIDADO");
+        alerta.setMessage("¿Seguro de borrar a "+p.getNombre()+" ?");
+        alerta.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                FormActivity.paisesList.remove(p);
+                listaPaises = FormActivity.paisesList;
+
+                notifyDataSetChanged();
+
+            }
+        });
+        alerta.setNegativeButton("Cancelar",null);
+        alerta.create();
+        alerta.show();
+
+    }
+
     @Override
     public void onBindViewHolder(@NonNull PaisAdapter.ViewHolder holder, int position) {
         holder.cargarInfo(listaPaises.get(position));
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
-                LayoutInflater inflater = LayoutInflater.from(holder.itemView.getContext());
-                View view1 = inflater.inflate(R.layout.dialogo,null);
-                builder.setView(view1);
-                EditText txt1 = view1.findViewById(R.id.editTextTextPersonName);
-                Spinner sp = view1.findViewById(R.id.spinner);
-                sp.setAdapter(new ArrayAdapter<String>(holder.itemView.getContext(), android.R.layout.simple_spinner_item,FormActivity.continentes));
-                txt1.setText(listaPaises.get(position).getNombre());
-                Toast.makeText(holder.itemView.getContext(), "largo:"+FormActivity.continentes.size(), Toast.LENGTH_SHORT).show();
-                int index = FormActivity.continentes.indexOf(listaPaises.get(position).getContinente());
-                sp.setSelection(index);
-                builder.setPositiveButton("Modificar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        FormActivity.paisesList.get(position).setNombre(txt1.getText().toString());
-                        FormActivity.paisesList.get(position).setContinente(sp.getSelectedItem().toString());
-                        notifyDataSetChanged();
-                        Toast.makeText(holder.itemView.getContext(), "Modificado", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                builder.create();
-                builder.show();
+
+                Pais paisSelected = listaPaises.get(position);
+                Intent intent =
+                        new Intent( holder.itemView.getContext() , EditActivity.class);
+                intent.putExtra("objetoPais", paisSelected);
+                holder.itemView.getContext().startActivity(intent);
             }
         });
+
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
-                builder.setMessage("¿Deseas eliminar "+listaPaises.get(position).getNombre()+"?").
-                        setTitle("Cuidado");
-                builder.setCancelable(false);
-                builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        FormActivity.paisesList.remove(position);
-                        notifyDataSetChanged();
-                    }
-                });
-                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(holder.itemView.getContext(), "No pasa nada", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                builder.create();
-                builder.show();
+                Pais paisSelected = listaPaises.get(position);
+                crearAlerta(paisSelected, holder.itemView.getContext());
                 return false;
             }
         });
+
+
+
+
     }
 
     @Override

@@ -19,14 +19,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FormActivity.paisesList.add(new Pais("Chile","América"));
-        FormActivity.paisesList.add(new Pais("Argentina","América"));
-        FormActivity.paisesList.add(new Pais("Brasil","América"));
-        FormActivity.continentes.add("Europa");
-        FormActivity.continentes.add("África");
-        FormActivity.continentes.add("Asia");
-        FormActivity.continentes.add("América");
-        FormActivity.continentes.add("Oceanía");
+        if( FormActivity.paisesList.size() == 0 ){
+            FormActivity.paisesList.add(new Pais("Chile","América"));
+            FormActivity.paisesList.add(new Pais("Argentina","América"));
+            FormActivity.paisesList.add(new Pais("Brasil","América"));
+        }
+
+        if( FormActivity.continentes.size() == 0 ){
+            // Definir los item del ArrayList(continentes)
+            FormActivity.continentes.add("Seleccione un continente");
+            FormActivity.continentes.add("Europa");
+            FormActivity.continentes.add("África");
+            FormActivity.continentes.add("Asia");
+            FormActivity.continentes.add("América");
+            FormActivity.continentes.add("Oceanía");
+        }
+
+
 
 
     }

@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -22,14 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FormActivity extends AppCompatActivity {
-    /*
-    <item>Selecciona un continente</item>
-        <item>Europa</item>
-        <item>África</item>
-        <item>Asia</item>
-        <item>América</item>
-        <item>Oceanía</item>
-     */
+
     public static ArrayList<Pais> paisesList = new ArrayList<>();
     public static ArrayList<String> continentes = new ArrayList<String>();
 
@@ -41,22 +35,71 @@ public class FormActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
-
+        // spContienentes == null
         txtNombre = findViewById(R.id.txtNombre);
         btnGuardar = findViewById(R.id.btn_guardar_pais);
         spContinentes = findViewById(R.id.spContinentes);
+
+
+
+        // Crear un adaptador para el Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item,continentes);
+        // Asignar el adaptador creado al Spinner
+        spContinentes.setAdapter(adapter);
 
         // eventos click al btn
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Pais pais = new Pais( txtNombre.getText().toString(),
-                        spContinentes.getSelectedItem().toString());
-                paisesList.add(pais);
+                // Validar
+                String nombre = txtNombre.getText().toString().toLowerCase();
+                String continente = spContinentes.getSelectedItem().toString();
+                boolean paisEsValido = true;
+
+                for( Pais p : paisesList ){
+                    if( p.getNombre().toLowerCase().equals(nombre) ){
+                        paisEsValido = false;
+                        break;
+                    }
+                }
+
+                if( nombre.isEmpty() ){
+                    txtNombre.setError("El nombre es obligatorio");
+
+                }else if( continente.equals( continentes.get(0) ) ){
+                    // Si el usuario selecciono el primer item no es valido
+                    Toast.makeText(FormActivity.this, "Por favor selecciona un continente",
+                            Toast.LENGTH_LONG).show();
+
+                }else if( paisEsValido == false ){
+                    Toast.makeText(FormActivity.this,
+                            nombre+" ya existe!",
+                            Toast.LENGTH_SHORT).show();
+
+                }else{
+                    Pais pais = new Pais(nombre , continente );
+
+                    paisesList.add(pais);
+
+                    limpiarFormulario();
+                    Toast.makeText(FormActivity.this,
+                            nombre.toLowerCase()+" registrado!",
+                            Toast.LENGTH_LONG).show();
+                }
+
+                // CHilE
+                // chile
             }
         });
 
     }
+
+    public void limpiarFormulario(){
+        txtNombre.setText("");
+        spContinentes.setSelection(0);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

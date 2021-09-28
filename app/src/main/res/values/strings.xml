@@ -9,6 +9,12 @@
     <string name="hint_txt">Ingresa nombre del país</string>
     <string name="btn_form">Guardar</string>
 
+    <string name="lblNombre">Nombre del país</string>
+    <string name="lblContientes">Nombre del continente</string>
+    <string name="btnCancelar">Cancelar</string>
+    <string name="btnActualizar">Actualizar</string>
+
+
 
     <string-array name="continentes">
         <item>Selecciona un continente</item>
